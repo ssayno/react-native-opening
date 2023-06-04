@@ -1,11 +1,8 @@
 import {API_KEY} from '../constants/apiKey';
+import type {completeParams} from '../constants/typeProps';
 
-type completeParams = {
-  regionAndCountry: string;
-  days: number;
-};
 export const getWeatherForeCast = async (params: completeParams) => {
-  console.log(`Search Key is ${params.regionAndCountry}`);
+  // console.log(`Search Key is ${params.regionAndCountry}`);
   const basicURL = `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${params.regionAndCountry}&days=${params.days}&aqi=no&alerts=n`;
   try {
     const response = await fetch(basicURL, {method: 'GET'});

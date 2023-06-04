@@ -1,4 +1,5 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React from 'react';
 type searchListProps = {
   sList: {
     name: string;
@@ -25,7 +26,9 @@ const SearchResultLine = (props: singleLineProps) => {
           styles.singleLine,
           {borderBottomWidth: props.lastLine ? 2 : 0},
         ]}>
-        <Text style={styles.colorText}>{props.name}, {props.country}</Text>
+        <Text style={styles.colorText}>
+          {props.name}, {props.country}
+        </Text>
       </View>
     </TouchableOpacity>
   );

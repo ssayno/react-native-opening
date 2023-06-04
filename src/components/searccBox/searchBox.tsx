@@ -5,82 +5,47 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {useState} from 'react';
+import { useCallback, useState } from "react";
 import {SearchList} from '../searchList/searchList';
 import {searchListAutoComplete} from '../../utils/searchAutoComplete';
-import {getWeatherForeCast} from "../../utils/getWeatherForecast";
-import { LocationShow } from "../infoShow/locationShow";
-import { WeatherImage } from "../infoShow/weatherImage";
-import { TemperatureShow } from "../infoShow/temperature";
-import { WeatherNameShow } from "../infoShow/weatherNameShow";
-import { WindDistance } from "../infoShow/windDistance";
-import { DropWater } from "../infoShow/dropWater";
-import { TimeShow } from "../infoShow/timeShow";
-import { DailyForecast } from "../daily-forecast/dailyForecast";
-import {weatherImages} from "../../constants/weatherImage";
+import type { searchBoxProps, singleSearchResultProps } from "../../constants/typeProps";
 
-export const SearchBox: () => JSX.Element = () => {
+export const SearchBox: (props: searchBoxProps) => JSX.Element = (props: searchBoxProps) => {
   const [show, setShow] = useState(false);
   const [searchKey, setSearchKey] = useState('');
-  const [searchResults, setSearchResults] = useState(Array<object>);
-  const [weather, setWeather] = useState({
-    temperature: 34,
-    weatherName: "Partly cloudy",
-    distance: 34,
-    dropWater: 34,
-    timeNow: "6:00",
-    forecast: []
-  });
+  const [searchResults, setSearchResults] = useState(Array<{
+    name: string;
+    country: string;
+  }>);
 
-  const handleSearhKeyWithClick = (rAndc: string) => {
+  const handleSearhKeyWithClick = useCallback((rAndc: string) => {
     setSearchKey(rAndc);
-    // clear searchResult data
+    console.log('What happened');
     setSearchResults([]);
-    getWeatherForeCast({regionAndCountry: rAndc, days: 6}).then(data => {
-      // console.log(`Current search box get forecast data is ${JSON.stringify(data)}`);
-      const responseData = JSON.parse(JSON.stringify(data));
-      const currentWeatherData = responseData['current'];
-      const forecastWeatherData = responseData['forecast']['forecastday'];
-      let tempForecast: { date_: string; temperature: string; }[] = [];
-      for(let item of forecastWeatherData){
-        tempForecast.push({
-          date_: item.date,
-          temperature: item['day']['avgtemp_c']
-        })
-      }
-      setWeather(prevState => {
-        return {...prevState,
-          temperature: currentWeatherData.temp_c,
-          weatherName: currentWeatherData.condition.text,
-          distance: currentWeatherData.wind_kph,
-          dropWater: currentWeatherData.wind_mph,
-          timeNow: responseData.location.localtime.split(' ')[1],
-          forecast: tempForecast
-        }
-      })
-
-
-    })
-  }
+    props.handleFunc({
+      regionAndCountry: rAndc,
+      days: 7,
+    });
+  }, [props.handleFunc])
 
   const handleSearchChange = (e: string) => {
     setSearchKey(e);
     if (e.length > 2){
       searchListAutoComplete({searchKey: e}).then(resp => {
-        console.log(`resp type is ${typeof resp}`);
-        let newSearchResult: Array<object> = [];
-        resp.map((i) => {
+        // console.log(`resp type is ${typeof resp}`);
+        let newSearchResult: Array<singleSearchResultProps> = [];
+        resp.map((i: singleSearchResultProps ) => {
           newSearchResult.push({name: i.name, country: i.country});
-          console.log(`a-b ${i.name}`);
+          // console.log(`a-b ${i.name}`);
         });
         setSearchResults(newSearchResult);
       });
     }
-    console.log(searchKey);
+    console.log(`TextInput changed text now is ${searchKey}`);
   };
 
   const handleClick: () => void = () => {
-    console.log(`Current show state is ${show}`);
+    // console.log(`Current show state is ${show}`);
     setShow(prevState => !prevState);
   };
   return (
@@ -107,26 +72,16 @@ export const SearchBox: () => JSX.Element = () => {
           <SearchList sList={searchResults} tempFunc={handleSearhKeyWithClick}/>
         ) : null}
       </View>
-      <LocationShow rAndC={searchKey} />
-      <WeatherImage imageUrl={weatherImages[weather.weatherName]}/>
-      <TemperatureShow temperature={weather.temperature} />
-      <WeatherNameShow name={weather.weatherName} />
-      <View style={styles.smallInfoStyle}>
-        <WindDistance distance={weather.distance}/>
-        <DropWater dropWater={weather.dropWater}/>
-        <TimeShow currentTime={weather.timeNow}/>
-      </View>
-      <DailyForecast forecast={weather.forecast}/>
     </>
   );
 };
 const styles = StyleSheet.create({
   searchBoxStyle: {
     height: 40,
-    width: '100%',
-    margin: 4,
+    width: '98%',
     position: 'relative',
     zIndex: 1,
+    marginTop: 20,
   },
   searchInput: {
     position: 'relative',
@@ -135,13 +90,6 @@ const styles = StyleSheet.create({
     height: '100%',
     borderRadius: 20,
     paddingLeft: 20,
-  },
-  smallInfoStyle: {
-    // borderStyle: 'solid',
-    // borderWidth: 2,
-    // borderColor: 'red',
-    flexDirection: 'row',
-    padding: 20,
   },
   searchButton: {
     position: 'absolute',

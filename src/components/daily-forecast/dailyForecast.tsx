@@ -1,12 +1,10 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import {SingleForecast} from './singleForecase';
-import { GlobalStyle } from '../../constants/globalStyle';
+import {GlobalStyle} from '../../constants/globalStyle';
+import type {singleDailyProps} from '../../constants/typeProps';
 
 type dfProps = {
-  forecast: {
-    date_: string;
-    temperature: string;
-  }[];
+  forecast: singleDailyProps[];
 };
 
 export const DailyForecast = (props: dfProps) => {
@@ -21,8 +19,9 @@ export const DailyForecast = (props: dfProps) => {
             <SingleForecast
               temperature={value.temperature}
               date_={value.date_}
+              condition={value.condition}
               key={index}
-            />)
+            />);
           })
         }
       </ScrollView>

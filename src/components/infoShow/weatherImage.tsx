@@ -1,20 +1,15 @@
-import { Image, StyleSheet } from "react-native";
+import {Image, ImageSourcePropType, StyleSheet} from 'react-native';
 
 type wiProps = {
-  imageUrl: string;
+  imageUrl: ImageSourcePropType;
 };
 export const WeatherImage = (props: wiProps) => {
-  return (
-    <Image
-      source={props.imageUrl}
-      style={styles.imageStyle}
-    />
-  );
+  return <Image source={props.imageUrl} style={styles.imageStyle} />;
 };
 
 const styles = StyleSheet.create({
   imageStyle: {
-    width: '50%',
-    height: '30%',
+    height: '25%',
+    resizeMode: 'contain',
   },
 });

@@ -1,15 +1,14 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {GlobalStyle} from '../../constants/globalStyle';
+import type {singleDailyProps} from '../../constants/typeProps';
+import {weatherImages} from '../../constants/weatherImage';
 
-type sfProps = {
-  date_: string;
-  temperature: string;
-};
-export const SingleForecast = (props: sfProps) => {
+export const SingleForecast = (props: singleDailyProps) => {
+  // console.log(props.condition);
   return (
     <View style={styles.singleForecast}>
       <Image
-        source={require('../../../assets/images/heavyrain.png')}
+        source={weatherImages[props.condition]}
         style={GlobalStyle.smallImage}
       />
       <Text>{props.date_}</Text>
