@@ -22,7 +22,7 @@ export const BottomTabNavigator = () => {
           component={WeatherNavigationStacker}
           options={{
             tabBarIcon: tabInfo => {
-              return <Icon name="rocket" size={20} color={tabInfo.color} />;
+              return <Icon name="bolt" size={20} color={tabInfo.color} />;
             },
           }}
         />

@@ -68,3 +68,13 @@ export type productListProps = {
 export type productCardProps = singleProductProps & {
   navigation: NativeStackNavigationProp<any>;
 };
+
+// export type debounceProps = {
+//   value: T;
+//   delay: number;
+// };
+//
+// export type debounceFuncProps = {
+//   (x: debounceProps) => T;
+// }
+

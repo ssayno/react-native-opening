@@ -5,21 +5,23 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {SearchList} from '../searchList/searchList';
 import {searchListAutoComplete} from '../../utils/searchAutoComplete';
 import type { searchBoxProps, singleSearchResultProps } from "../../constants/typeProps";
+import useDebounce from "../../hooks/useDebounce";
 
 export const SearchBox: (props: searchBoxProps) => JSX.Element = (props: searchBoxProps) => {
   const [show, setShow] = useState(false);
   const [searchKey, setSearchKey] = useState('');
+  const deBounceValue = useDebounce(searchKey, 200);
   const [searchResults, setSearchResults] = useState(Array<{
     name: string;
     country: string;
   }>);
 
   const handleSearhKeyWithClick = useCallback((rAndc: string) => {
-    setSearchKey(rAndc);
+    setSearchKey('');
     console.log('What happened');
     setSearchResults([]);
     props.handleFunc({
@@ -27,11 +29,12 @@ export const SearchBox: (props: searchBoxProps) => JSX.Element = (props: searchB
       days: 7,
     });
   }, [props.handleFunc])
-
-  const handleSearchChange = (e: string) => {
-    setSearchKey(e);
-    if (e.length > 2){
-      searchListAutoComplete({searchKey: e}).then(resp => {
+  useEffect(() => {
+    setSearchResults([]);
+    // console.log(`debounce value is ${bounceValue}`);
+    if (deBounceValue.length > 2){
+      console.log('Start search');
+      searchListAutoComplete({searchKey}).then(resp => {
         // console.log(`resp type is ${typeof resp}`);
         let newSearchResult: Array<singleSearchResultProps> = [];
         resp.map((i: singleSearchResultProps ) => {
@@ -41,7 +44,10 @@ export const SearchBox: (props: searchBoxProps) => JSX.Element = (props: searchB
         setSearchResults(newSearchResult);
       });
     }
-    console.log(`TextInput changed text now is ${searchKey}`);
+  }, [deBounceValue])
+  const handleSearchChange = (e: string) => {
+    setSearchKey(e);
+    // console.log(`TextInput changed text now is ${searchKey}`);
   };
 
   const handleClick: () => void = () => {
