@@ -1,4 +1,5 @@
 import {RouteProp} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 export type completeParams = {
   regionAndCountry: string;
@@ -47,8 +48,9 @@ export type getSingleCategoryFuncProp = {
   itemId: number;
   page: number;
 };
-export type productDetailProps = {
+export type productListPageProp = {
   route: RouteProp<any>;
+  navigation: NativeStackNavigationProp<any>;
 } & getSingleCategoryFuncProp;
 
 export type singleProductProps = {
@@ -56,9 +58,13 @@ export type singleProductProps = {
   productName: string;
   adviceRetailPrice: string;
   productPrice: string;
+  productId: number;
 };
 export type productListProps = {
   listData: Array<singleProductProps>;
   page: number;
   total: number;
+};
+export type productCardProps = singleProductProps & {
+  navigation: NativeStackNavigationProp<any>;
 };

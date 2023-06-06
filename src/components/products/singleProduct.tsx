@@ -11,7 +11,7 @@ export const SingleProduct = (props: {
       style={styles.singleProductStyle}
       onPress={() =>{
         console.log('product id is', props.weneed.id);
-        props.navigation.push('ProductDetail', {
+        props.navigation.navigate('ProductList', {
           itemId: props.weneed.id,
         });
       }}>

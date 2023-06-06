@@ -2,7 +2,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Profile} from '../screens/profile';
 import {NavigationContainer} from '@react-navigation/native';
 import {ProductNavigationStacker, WeatherNavigationStacker} from './navigation';
-
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const OwnTab = createBottomTabNavigator();
 export const BottomTabNavigator = () => {
@@ -13,10 +13,39 @@ export const BottomTabNavigator = () => {
           tabBarActiveTintColor: 'blue',
           tabBarInactiveTintColor: 'gray',
           headerShown: false,
+          tabBarStyle: {
+            height: '6%',
+          },
         }}>
-        <OwnTab.Screen name="Weather" component={WeatherNavigationStacker} />
-        <OwnTab.Screen name="Movie" component={ProductNavigationStacker} />
-        <OwnTab.Screen name="Profile" component={Profile} />
+        <OwnTab.Screen
+          name="Weather"
+          component={WeatherNavigationStacker}
+          options={{
+            tabBarIcon: tabInfo => {
+              return <Icon name="rocket" size={20} color={tabInfo.color} />;
+            },
+          }}
+        />
+        <OwnTab.Screen
+          name="Product"
+          component={ProductNavigationStacker}
+          options={{
+            tabBarIcon: tabInfo => {
+              return (
+                <Icon name="product-hunt" size={20} color={tabInfo.color} />
+              );
+            },
+          }}
+        />
+        <OwnTab.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            tabBarIcon: tabInfo => {
+              return <Icon name="male" size={20} color={tabInfo.color} />;
+            },
+          }}
+        />
       </OwnTab.Navigator>
     </NavigationContainer>
   );
