@@ -9,8 +9,17 @@ import {
 // use temp data for stastic page draw
 // import {tempData} from '../constants/temp_';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {BottomDetailPage} from '../components/products/bottomDetailPage';
+import {BottomDetailPage} from '../../components/products/bottomDetailPage';
+import {useEffect, useState} from 'react';
+import {getProductDetailFunc} from '../../utils/getProductDetail';
+import {LoadingComponent} from '../../components/products/loadingComponent';
 
+// type productHeaderProps = {
+//   ext: object;
+//   fp: object;
+// };
+
+// @ts-ignore
 const HeaderProductDetail = ({ext, fp}) => {
   return (
     <View>
@@ -46,22 +55,26 @@ const HeaderProductDetail = ({ext, fp}) => {
   );
 };
 
-export const ProductDetail = props => {
-  const data = props.route.params.respData;
-  const ext = data.ext;
-  const filds = ext.fild;
-  const firstFild = filds[0];
-  const productDesc = ext.productDesc;
+export const ProductDetail = (props: {route: {params: {itemId: any}}}) => {
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    getProductDetailFunc(props.route.params.itemId).then(respData => {
+      setData(respData);
+    });
+  }, [props.route.params?.itemId]);
+  // const data = props.route.params.respData;
   const rg = /img.*?src="(https.*?)"/g;
-  const productDescPic = productDesc
-    .match(rg)
-    ?.map(i => i.slice(9, i.length - 1));
 
   // console.log(`Picture address is ${productDescPic}`);
-  return (
+  // @ts-ignore
+  return data ? (
     <FlatList
-      data={productDescPic}
-      ListHeaderComponent={<HeaderProductDetail ext={ext} fp={firstFild} />}
+      data={data.ext.productDesc
+        .match(rg)
+        ?.map((i: string | any[]) => i.slice(9, i.length - 1))}
+      ListHeaderComponent={
+        <HeaderProductDetail ext={data.ext} fp={data.ext.fild} />
+      }
       maxToRenderPerBatch={5}
       ListFooterComponent={<BottomDetailPage />}
       renderItem={({item, index}) => {
@@ -74,6 +87,8 @@ export const ProductDetail = props => {
         );
       }}
     />
+  ) : (
+    <LoadingComponent />
   );
 };
 

@@ -1,9 +1,9 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Weather} from '../screens/weather';
 import {WeatherTemp} from '../screens/weatherTemp';
-import {Movie} from '../screens/movie';
-import {ProductList} from '../screens/productList';
-import {ProductDetail} from '../screens/productDetail';
+import {Product} from '../screens/product';
+import {ProductList} from '../screens/productPages/productList';
+import {ProductDetail} from '../screens/productPages/productDetail';
 
 const WeatherNavigationStack = createNativeStackNavigator();
 const ProductsNavigationStack = createNativeStackNavigator();
@@ -38,7 +38,7 @@ export const ProductNavigationStacker = () => {
       }}>
       <ProductsNavigationStack.Screen
         name="ProductMain"
-        component={Movie}
+        component={Product}
         // options={{title: 'Weather'}}
       />
       <ProductsNavigationStack.Screen

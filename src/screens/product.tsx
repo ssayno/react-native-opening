@@ -5,24 +5,23 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
-} from "react-native";
+  View,
+} from 'react-native';
 import {useEffect, useState} from 'react';
 import type {
   movieSideProp,
   singleMoveRightProps,
   singleMovieSideProp,
 } from '../constants/typeProps';
-import {MovieTestData} from '../constants/testData';
 import {getProductCategories} from '../utils/get_product';
 import {SingleProduct} from '../components/products/singleProduct';
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 const Separator = () => {
   return <View style={styles.separator} />;
 };
 
-export const Movie = (props: {navigation: NativeStackNavigationProp<any>;}) => {
+export const Product = (props: {navigation: NativeStackNavigationProp<any>}) => {
   const [currentMovies, setCurrentMovies] = useState<movieSideProp>({
     allData: null,
     currentIndex: -1,

@@ -59,6 +59,7 @@ export type singleProductProps = {
   adviceRetailPrice: string;
   productPrice: string;
   productId: number;
+  num: number;
 };
 export type productListProps = {
   listData: Array<singleProductProps>;
@@ -67,7 +68,14 @@ export type productListProps = {
 };
 export type productCardProps = singleProductProps & {
   navigation: NativeStackNavigationProp<any>;
+  index: number;
+  openShoppingCarModal: (x: number) => void;
 };
+
+export type shoppingCarModalDataProp = {
+  show: boolean;
+  showContent: singleProductProps | null;
+}
 
 // export type debounceProps = {
 //   value: T;

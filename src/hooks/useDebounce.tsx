@@ -11,7 +11,6 @@ function useDebounce<T>(value: T, delay?: number) {
     // react will call return function in useEffect callback function when next useEffect is trigger.
     return () => {
       clearTimeout(timer);
-      console.log(`Clear timer is ${timer}, ${debounceValue}`);
     };
   }, [value, delay]);
   return debounceValue;

@@ -28,6 +28,7 @@ import {DailyForecast} from '../components/daily-forecast/dailyForecast';
 import {OwnDimension} from '../utils/get_device_dimension';
 import {weatherImages} from '../constants/weatherImage';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import { MiddleModal } from "../modals/middleModal";
 
 type weatherComponentProps = {
   navigation: NativeStackNavigationProp<any>;
@@ -128,6 +129,7 @@ export const Weather = (props: weatherComponentProps) => {
         <TimeShow currentTime={weather.timeNow} />
       </View>
       <DailyForecast forecast={weather.forecast} />
+      <MiddleModal />
     </SafeAreaView>
   );
 };
