@@ -21,7 +21,9 @@ const Separator = () => {
   return <View style={styles.separator} />;
 };
 
-export const Product = (props: {navigation: NativeStackNavigationProp<any>}) => {
+export const Product = (props: {
+  navigation: NativeStackNavigationProp<any>;
+}) => {
   const [currentMovies, setCurrentMovies] = useState<movieSideProp>({
     allData: null,
     currentIndex: -1,

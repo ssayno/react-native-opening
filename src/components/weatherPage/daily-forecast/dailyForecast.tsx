@@ -1,7 +1,7 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import {SingleForecast} from './singleForecase';
-import {GlobalStyle} from '../../constants/globalStyle';
-import type {singleDailyProps} from '../../constants/typeProps';
+import {GlobalStyle} from '../../../constants/globalStyle';
+import type {singleDailyProps} from '../../../constants/typeProps';
 
 type dfProps = {
   forecast: singleDailyProps[];

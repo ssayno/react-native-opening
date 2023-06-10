@@ -1,7 +1,7 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Profile} from '../screens/profile';
 import {NavigationContainer} from '@react-navigation/native';
-import {ProductNavigationStacker, WeatherNavigationStacker} from './navigation';
+import { ProductNavigationStacker, ProfileNavigationStacker, WeatherNavigationStacker } from "./navigation";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const OwnTab = createBottomTabNavigator();
@@ -39,7 +39,7 @@ export const BottomTabNavigator = () => {
         />
         <OwnTab.Screen
           name="Profile"
-          component={Profile}
+          component={ProfileNavigationStacker}
           options={{
             tabBarIcon: tabInfo => {
               return <Icon name="male" size={20} color={tabInfo.color} />;

@@ -1,5 +1,4 @@
-import {RouteProp} from '@react-navigation/native';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {StackNavigationProp} from '@react-navigation/stack';
 
 export type completeParams = {
   regionAndCountry: string;
@@ -48,10 +47,6 @@ export type getSingleCategoryFuncProp = {
   itemId: number;
   page: number;
 };
-export type productListPageProp = {
-  route: RouteProp<any>;
-  navigation: NativeStackNavigationProp<any>;
-} & getSingleCategoryFuncProp;
 
 export type singleProductProps = {
   mainImg: string;
@@ -67,7 +62,7 @@ export type productListProps = {
   total: number;
 };
 export type productCardProps = singleProductProps & {
-  navigation: NativeStackNavigationProp<any>;
+  navigation: StackNavigationProp<any>;
   index: number;
   openShoppingCarModal: (x: number) => void;
 };
@@ -75,7 +70,7 @@ export type productCardProps = singleProductProps & {
 export type shoppingCarModalDataProp = {
   show: boolean;
   showContent: singleProductProps | null;
-}
+};
 
 // export type debounceProps = {
 //   value: T;
@@ -85,4 +80,3 @@ export type shoppingCarModalDataProp = {
 // export type debounceFuncProps = {
 //   (x: debounceProps) => T;
 // }
-

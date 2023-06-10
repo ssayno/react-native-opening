@@ -2,11 +2,31 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Weather} from '../screens/weather';
 import {WeatherTemp} from '../screens/weatherTemp';
 import {Product} from '../screens/product';
-import {ProductList} from '../screens/productPages/productList';
-import {ProductDetail} from '../screens/productPages/productDetail';
+import {ProductList} from '../components/products/productPages/productList';
+import {ProductDetail} from '../components/products/productPages/productDetail';
+import {Profile} from '../screens/profile';
+import {LanguageIntro} from '../components/profile/languageIntro';
+import {ContactDetail} from '../components/profile/contactDetail';
+import {Hobbies} from '../components/profile/hobbies';
+
+export type ProductStackParamList = {
+  ProductMain: undefined;
+  ProductDetail: {itemId: number};
+  ProductList: {itemId: number; page: number};
+};
+
+export type ProfileStackParamList = {
+  ProfileMain: undefined;
+  ProfileLanguageIntro: undefined;
+  ProfileContactDetails: undefined;
+  ProfileHobbies: undefined;
+};
 
 const WeatherNavigationStack = createNativeStackNavigator();
-const ProductsNavigationStack = createNativeStackNavigator();
+const ProductsNavigationStack =
+  createNativeStackNavigator<ProductStackParamList>();
+const ProfileNavigationStack =
+  createNativeStackNavigator<ProfileStackParamList>();
 
 export const WeatherNavigationStacker = () => {
   return (
@@ -30,6 +50,7 @@ export const WeatherNavigationStacker = () => {
     </WeatherNavigationStack.Navigator>
   );
 };
+
 export const ProductNavigationStacker = () => {
   return (
     <ProductsNavigationStack.Navigator
@@ -48,9 +69,32 @@ export const ProductNavigationStacker = () => {
         // options={{title: 'Weather next'}}
       />
       <ProductsNavigationStack.Screen
-        name={'ProductDetail'}
+        name="ProductDetail"
         component={ProductDetail}
       />
     </ProductsNavigationStack.Navigator>
+  );
+};
+
+export const ProfileNavigationStacker = () => {
+  return (
+    <ProfileNavigationStack.Navigator
+      screenOptions={{
+        headerShown: true,
+      }}>
+      <ProfileNavigationStack.Screen name="ProfileMain" component={Profile} />
+      <ProfileNavigationStack.Screen
+        name="ProfileLanguageIntro"
+        component={LanguageIntro}
+      />
+      <ProfileNavigationStack.Screen
+        name="ProfileContactDetails"
+        component={ContactDetail}
+      />
+      <ProfileNavigationStack.Screen
+        name="ProfileHobbies"
+        component={Hobbies}
+      />
+    </ProfileNavigationStack.Navigator>
   );
 };

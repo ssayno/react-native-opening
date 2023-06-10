@@ -1,17 +1,16 @@
 import {
-  Button,
   Image,
   ImageSourcePropType,
   SafeAreaView,
-  ScrollView,
   StyleSheet,
   Text,
-  TouchableHighlight,
   TouchableOpacity,
   View,
 } from 'react-native';
-import {useState} from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome';
+
+import {RouteProp} from '@react-navigation/native';
+import {ProfileStackParamList} from '../navigation/navigation';
+import {StackNavigationProp} from '@react-navigation/stack';
 
 const Avatar = ({imagePath}: {imagePath: ImageSourcePropType}) => {
   return (
@@ -29,70 +28,87 @@ const NameAndMotto = () => {
   );
 };
 
-const Technology = ({
-  listHeaderText,
-  listBodyContent,
-}: {
+type ProfileNavProps = {
+  navigation: StackNavigationProp<ProfileStackParamList>;
   listHeaderText: string;
-  listBodyContent: Array<string>;
-}) => {
-  const [expand, setExpand] = useState(false);
+};
+
+const LanguageIntroNav = ({navigation, listHeaderText}: ProfileNavProps) => {
   return (
     <View style={styles.listCom}>
-      <TouchableHighlight onPress={() => setExpand(prevState => !prevState)}>
-        <View style={styles.listHeader}>
-          <Text>{listHeaderText}</Text>
-          {expand ? (
-            <Icon name={'chevron-up'} />
-          ) : (
-            <Icon name={'chevron-down'} />
-          )}
-        </View>
-      </TouchableHighlight>
-      {expand && (
-        <View style={styles.listBody}>
-          {listBodyContent.map((value, index) => (
-            <Text key={index}>{value}</Text>
-          ))}
-        </View>
-      )}
+      <View style={styles.listHeader}>
+        <Text>{listHeaderText}</Text>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('ProfileLanguageIntro');
+          }}>
+          <Text>go</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+const ContactDetailsNav = ({navigation, listHeaderText}: ProfileNavProps) => {
+  return (
+    <View style={styles.listCom}>
+      <View style={styles.listHeader}>
+        <Text>{listHeaderText}</Text>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('ProfileContactDetails');
+          }}>
+          <Text>go</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
-const SelfDescription = () => {
+const HobbiesNav = ({navigation, listHeaderText}: ProfileNavProps) => {
   return (
-    <ScrollView style={styles.selfDescriptionBox}>
-      <Text style={styles.selfDescriptionText}>
-        Confused all day long, not knowing why.
-      </Text>
-    </ScrollView>
+    <View style={styles.listCom}>
+      <View style={styles.listHeader}>
+        <Text>{listHeaderText}</Text>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('ProfileHobbies');
+          }}>
+          <Text>go</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 };
 
+// const SelfDescription = () => {
+//   return (
+//     <View style={styles.selfDescriptionBox}>
+//       <Text style={styles.selfDescriptionText}>
+//         Confused all day long, not knowing why.
+//       </Text>
+//     </View>
+//   );
+// };
+
 const ProfileFooter = () => {
-  return <Text style={styles.footer}>&copy;http://www.sayno.work</Text>;
+  return <Text style={styles.footer}>&copy;</Text>;
 };
 
-export const Profile = () => {
+type ProfileMainScreenProps = {
+  route: RouteProp<ProfileStackParamList, 'ProfileMain'>;
+  navigation: StackNavigationProp<ProfileStackParamList, 'ProfileMain'>;
+};
+
+export const Profile = ({navigation}: ProfileMainScreenProps) => {
   const avatarImage: ImageSourcePropType = require('../../assets/avatar.jpg');
   return (
     <SafeAreaView style={styles.profilePage}>
       <Avatar imagePath={avatarImage} />
       <NameAndMotto />
-      <Technology
-        listHeaderText={'擅长的语言'}
-        listBodyContent={['java', 'javascript', 'python', 'elisp', 'C']}
-      />
-      <Technology
-        listHeaderText={'联系方式'}
-        listBodyContent={['QQ', 'wechat', 'github']}
-      />
-      <Technology
-        listHeaderText={'擅长的语言'}
-        listBodyContent={['java', 'javascript', 'python', 'elisp', 'C']}
-      />
-      <SelfDescription />
+      <LanguageIntroNav navigation={navigation} listHeaderText={'擅长的语言'} />
+      <ContactDetailsNav navigation={navigation} listHeaderText={'联系方式'} />
+      <HobbiesNav navigation={navigation} listHeaderText={'兴趣爱好'} />
+      {/*<SelfDescription />*/}
       <ProfileFooter />
     </SafeAreaView>
   );
@@ -101,9 +117,8 @@ export const Profile = () => {
 const styles = StyleSheet.create({
   profilePage: {
     flex: 1,
-    flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
   },
   avatarImageBox: {
     width: 100,
@@ -119,7 +134,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   nAndM: {
-    width: '98%',
+    width: '90%',
     borderBottomColor: 'lightgray',
     borderBottomWidth: 2,
     borderStyle: 'solid',
@@ -138,7 +153,7 @@ const styles = StyleSheet.create({
   },
   listCom: {
     marginTop: 10,
-    width: '100%',
+    width: '90%',
   },
   listHeader: {
     backgroundColor: 'lightgreen',
@@ -151,7 +166,7 @@ const styles = StyleSheet.create({
     paddingLeft: 40,
   },
   selfDescriptionBox: {
-    // flex: 1,
+    flex: 1,
     flexDirection: 'column',
     margin: 20,
     padding: 20,
@@ -161,10 +176,11 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   selfDescriptionText: {
-    fontWeight: '200',
+    fontWeight: '800',
     color: 'red',
   },
   footer: {
     color: 'gray',
+    marginTop: 'auto',
   },
 });

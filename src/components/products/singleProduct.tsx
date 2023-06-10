@@ -1,5 +1,5 @@
 import type {singleMoveRightProps} from '../../constants/typeProps';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 export const SingleProduct = (props: {
@@ -9,10 +9,11 @@ export const SingleProduct = (props: {
   return (
     <TouchableOpacity
       style={styles.singleProductStyle}
-      onPress={() =>{
+      onPress={() => {
         console.log('product id is', props.weneed.id);
         props.navigation.navigate('ProductList', {
           itemId: props.weneed.id,
+          page: 0,
         });
       }}>
       <Image

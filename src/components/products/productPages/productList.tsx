@@ -1,20 +1,28 @@
 import type {
   getSingleCategoryFuncProp,
-  productListPageProp,
   productListProps,
   shoppingCarModalDataProp,
   singleProductProps,
-} from '../../constants/typeProps';
+} from '../../../constants/typeProps';
 import {FlatList, StyleSheet, View} from 'react-native';
-import {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
-import {getSingleCategoryFunc} from '../../utils/getSingleCategory';
-import {AddToShoppingCarModal} from '../../modals/addToShoppingCar';
-import {ProductCard} from '../../components/products/productCard';
-import {LoadingComponent} from '../../components/products/loadingComponent';
+import {getSingleCategoryFunc} from '../../../utils/getSingleCategory';
+import {AddToShoppingCarModal} from '../../../modals/addToShoppingCar';
+import {ProductCard} from '../productCard';
+import {LoadingComponent} from '../loadingComponent';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {ProductStackParamList} from '../../../navigation/navigation';
+import {RouteProp} from '@react-navigation/native';
 
-export const ProductList = (props: productListPageProp) => {
+type ProductListScreenProps = {
+  navigation: StackNavigationProp<ProductStackParamList, 'ProductList'>;
+  route: RouteProp<ProductStackParamList, 'ProductList'>;
+};
+
+export const ProductList = ({route, navigation}: ProductListScreenProps) => {
   const [loading, setLoading] = useState<boolean>(false);
+  const {itemId, page} = route.params;
   const [modalInfo, setModalInfo] = useState<shoppingCarModalDataProp>({
     show: false,
     showContent: null,
@@ -47,8 +55,8 @@ export const ProductList = (props: productListPageProp) => {
     }
     setLoading(true);
     const params: getSingleCategoryFuncProp = {
-      itemId: props.route.params?.itemId,
-      page: productList.page,
+      itemId: itemId,
+      page: page,
     };
     getSingleCategoryFunc(params).then(data => {
       const rowData = data.rows;
@@ -99,7 +107,7 @@ export const ProductList = (props: productListPageProp) => {
             <ProductCard
               {...item}
               index={index}
-              navigation={props.navigation}
+              navigation={navigation}
               openShoppingCarModal={updateModalContent}
               key={index}
             />

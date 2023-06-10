@@ -5,7 +5,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
 } from 'react-native';
 import {useCallback, useEffect, useRef, useState} from 'react';
@@ -16,31 +15,32 @@ import {
 } from '../constants/typeProps';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getWeatherForeCast} from '../utils/getWeatherForecast';
-import {SearchBox} from '../components/searccBox/searchBox';
-import {LocationShow} from '../components/infoShow/locationShow';
-import {WeatherImage} from '../components/infoShow/weatherImage';
-import {TemperatureShow} from '../components/infoShow/temperature';
-import {WeatherNameShow} from '../components/infoShow/weatherNameShow';
-import {WindDistance} from '../components/infoShow/windDistance';
-import {DropWater} from '../components/infoShow/dropWater';
-import {TimeShow} from '../components/infoShow/timeShow';
-import {DailyForecast} from '../components/daily-forecast/dailyForecast';
+import {SearchBox} from '../components/weatherPage/searccBox/searchBox';
+import {LocationShow} from '../components/weatherPage/infoShow/locationShow';
+import {WeatherImage} from '../components/weatherPage/infoShow/weatherImage';
+import {TemperatureShow} from '../components/weatherPage/infoShow/temperature';
+import {WeatherNameShow} from '../components/weatherPage/infoShow/weatherNameShow';
+import {WindDistance} from '../components/weatherPage/infoShow/windDistance';
+import {DropWater} from '../components/weatherPage/infoShow/dropWater';
+import {TimeShow} from '../components/weatherPage/infoShow/timeShow';
+import {DailyForecast} from '../components/weatherPage/daily-forecast/dailyForecast';
 import {OwnDimension} from '../utils/get_device_dimension';
 import {weatherImages} from '../constants/weatherImage';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import { MiddleModal } from "../modals/middleModal";
+import {MiddleModal} from '../modals/middleModal';
 
 type weatherComponentProps = {
   navigation: NativeStackNavigationProp<any>;
 };
 
 export const Weather = (props: weatherComponentProps) => {
+  // AsyncStorage.clear().then();
   const [weather, setWeather] = useState<weatherProps>(null);
   let startStorage: React.MutableRefObject<boolean> = useRef(false);
-  const asyncStorageData = useCallback(async (weather_: weatherProps) => {
+  const asyncStorageData = useCallback(async (real: completeParams) => {
     const response = await AsyncStorage.setItem(
       'latestData',
-      JSON.stringify(weather_),
+      JSON.stringify(real),
     );
     console.log('Storage function is finished');
     return response;
@@ -48,31 +48,39 @@ export const Weather = (props: weatherComponentProps) => {
   const asyncFetchData = useCallback(async () => {
     // always return string, change null to string, holy shit.
     const storedData: string | null = await AsyncStorage.getItem('latestData');
-    return storedData !== 'null'
-      ? JSON.parse(storedData as string)
-      : handleWeatherForecast({regionAndCountry: 'Xiangtan,China', days: 7});
+    return storedData ? JSON.parse(storedData) : null;
   }, []);
   useEffect(() => {
     asyncFetchData().then(data => {
+      let searchParams;
       console.log(`Fetch data is ${data}`);
-      if (data) {
-        setWeather(data);
+      if (!data) {
+        searchParams = {regionAndCountry: 'Xiangtan,China', days: 7};
+      } else {
+        searchParams = data;
       }
+      handleWeatherForecast(searchParams);
     });
   }, []);
-  useEffect(() => {
-    // console.log(startStorage.current);
-    if (weather !== null) {
-      if (startStorage.current) {
-        asyncStorageData(weather).then(data => {
-          console.log(`Storage response is ${data}`);
-        });
-      } else {
-        startStorage.current = true;
-      }
-    }
-  }, [asyncStorageData, weather]);
+  // useEffect(() => {
+  //   // console.log(startStorage.current);
+  //   if (weather !== null) {
+  //     if (startStorage.current) {
+  //       asyncStorageData(weather).then(data => {
+  //         console.log(`Storage response is ${data}`);
+  //       });
+  //     } else {
+  //       startStorage.current = true;
+  //     }
+  //   }
+  // }, [asyncStorageData, weather]);
   const handleWeatherForecast = (params: completeParams) => {
+    console.log(`Params is ${params}`);
+    if (startStorage.current) {
+      asyncStorageData(params).then(data => {
+        console.log(`Storage response is ${data}`);
+      });
+    }
     getWeatherForeCast(params).then(data => {
       // console.log(`Current search box get forecast data is ${JSON.stringify(data)}`);
       const responseData = JSON.parse(JSON.stringify(data));
@@ -116,7 +124,7 @@ export const Weather = (props: weatherComponentProps) => {
 
       <Button
         title={'click'}
-        onPress={() => props.navigation.push("WeatherNext")}
+        onPress={() => props.navigation.push('WeatherNext')}
       />
       <SearchBox handleFunc={handleWeatherForecast} />
       <LocationShow rAndC={weather.regionAndCountry} />

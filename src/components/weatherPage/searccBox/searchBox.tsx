@@ -7,9 +7,9 @@ import {
 } from 'react-native';
 import { useCallback, useEffect, useState } from "react";
 import {SearchList} from '../searchList/searchList';
-import {searchListAutoComplete} from '../../utils/searchAutoComplete';
-import type { searchBoxProps, singleSearchResultProps } from "../../constants/typeProps";
-import useDebounce from "../../hooks/useDebounce";
+import {searchListAutoComplete} from '../../../utils/searchAutoComplete';
+import type { searchBoxProps, singleSearchResultProps } from "../../../constants/typeProps";
+import useDebounce from "../../../hooks/useDebounce";
 
 export const SearchBox: (props: searchBoxProps) => JSX.Element = (props: searchBoxProps) => {
   const [show, setShow] = useState(false);

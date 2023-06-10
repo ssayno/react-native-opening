@@ -9,17 +9,14 @@ import {
 // use temp data for stastic page draw
 // import {tempData} from '../constants/temp_';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {BottomDetailPage} from '../../components/products/bottomDetailPage';
-import {useEffect, useState} from 'react';
-import {getProductDetailFunc} from '../../utils/getProductDetail';
-import {LoadingComponent} from '../../components/products/loadingComponent';
+import {BottomDetailPage} from '../bottomDetailPage';
+import React, {useEffect, useState} from 'react';
+import {getProductDetailFunc} from '../../../utils/getProductDetail';
+import {LoadingComponent} from '../loadingComponent';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {ProductStackParamList} from '../../../navigation/navigation';
+import {RouteProp} from '@react-navigation/native';
 
-// type productHeaderProps = {
-//   ext: object;
-//   fp: object;
-// };
-
-// @ts-ignore
 const HeaderProductDetail = ({ext, fp}) => {
   return (
     <View>
@@ -55,18 +52,22 @@ const HeaderProductDetail = ({ext, fp}) => {
   );
 };
 
-export const ProductDetail = (props: {route: {params: {itemId: any}}}) => {
+type ProductDetailScreenProps = {
+  navigation: StackNavigationProp<ProductStackParamList, 'ProductDetail'>;
+  route: RouteProp<ProductStackParamList, 'ProductDetail'>;
+};
+export const ProductDetail = ({route}: ProductDetailScreenProps) => {
   const [data, setData] = useState(null);
+  const {itemId} = route.params;
   useEffect(() => {
-    getProductDetailFunc(props.route.params.itemId).then(respData => {
+    getProductDetailFunc(itemId).then(respData => {
       setData(respData);
     });
-  }, [props.route.params?.itemId]);
+  }, [itemId]);
   // const data = props.route.params.respData;
   const rg = /img.*?src="(https.*?)"/g;
 
   // console.log(`Picture address is ${productDescPic}`);
-  // @ts-ignore
   return data ? (
     <FlatList
       data={data.ext.productDesc

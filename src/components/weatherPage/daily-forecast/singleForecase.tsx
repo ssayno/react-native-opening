@@ -1,7 +1,7 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
-import {GlobalStyle} from '../../constants/globalStyle';
-import type {singleDailyProps} from '../../constants/typeProps';
-import {weatherImages} from '../../constants/weatherImage';
+import {GlobalStyle} from '../../../constants/globalStyle';
+import type {singleDailyProps} from '../../../constants/typeProps';
+import {weatherImages} from '../../../constants/weatherImage';
 
 export const SingleForecast = (props: singleDailyProps) => {
   // console.log(props.condition);
