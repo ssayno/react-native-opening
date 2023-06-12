@@ -7,7 +7,7 @@ import {ProductDetail} from '../components/products/productPages/productDetail';
 import {Profile} from '../screens/profile';
 import LanguageIntro from '../components/profile/languageIntro/languageIntro';
 import ContactDetail from '../components/profile/contactDetail/contactDetail';
-import {Hobbies} from '../components/profile/hobbies';
+import {Hobbies} from '../components/profile/hobbies/hobbies';
 import { SafeAreaView, Text, View } from "react-native";
 
 export type ProductStackParamList = {

@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import {shoppingCarModalDataProp} from '../constants/typeProps';
+import {useState} from 'react';
 
 type shoppingCarModal = {
   modalData: shoppingCarModalDataProp;
@@ -21,6 +22,12 @@ export const AddToShoppingCarModal = ({
   modalData,
   closeModal,
 }: shoppingCarModal) => {
+  const [addNumber, setAddNumber] = useState<number>(0);
+  const handleAddNumberChanged = (value: string) => {
+    if (/^\d+$/.test(value)) {
+      setAddNumber(parseInt(value, 10));
+    }
+  };
   return (
     <Modal
       animationType="slide"
@@ -66,15 +73,19 @@ export const AddToShoppingCarModal = ({
                 <Text>购买数量</Text>
                 <View style={[styles.buyButtonBox]}>
                   <TouchableOpacity
-                    style={[styles.addOrSubtractButton, styles.grayBox]}>
+                    style={[styles.addOrSubtractButton, styles.grayBox]}
+                    onPress={() => setAddNumber(prevState => prevState - 1)}>
                     <Text>-</Text>
                   </TouchableOpacity>
                   <TextInput
                     keyboardType={'numeric'}
                     style={[styles.buyNumberInput, styles.grayBox]}
+                    value={addNumber.toString()}
+                    onChangeText={handleAddNumberChanged}
                   />
                   <TouchableOpacity
-                    style={[styles.addOrSubtractButton, styles.grayBox]}>
+                    style={[styles.addOrSubtractButton, styles.grayBox]}
+                    onPress={() => setAddNumber(prevState => prevState + 1)}>
                     <Text>+</Text>
                   </TouchableOpacity>
                 </View>
