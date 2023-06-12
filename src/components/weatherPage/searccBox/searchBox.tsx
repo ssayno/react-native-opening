@@ -1,10 +1,11 @@
 import {
+  Alert,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  View,
-} from 'react-native';
+  View
+} from "react-native";
 import { useCallback, useEffect, useState } from "react";
 import {SearchList} from '../searchList/searchList';
 import {searchListAutoComplete} from '../../../utils/searchAutoComplete';
@@ -42,7 +43,9 @@ export const SearchBox: (props: searchBoxProps) => JSX.Element = (props: searchB
           // console.log(`a-b ${i.name}`);
         });
         setSearchResults(newSearchResult);
-      });
+      }).catch(e => {
+        Alert.alert(`weather searchbox ${e}`);
+      })
     }
   }, [deBounceValue])
   const handleSearchChange = (e: string) => {

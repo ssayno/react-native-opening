@@ -1,5 +1,4 @@
 import {
-  Image,
   ImageSourcePropType,
   SafeAreaView,
   StyleSheet,
@@ -11,14 +10,8 @@ import {
 import {RouteProp} from '@react-navigation/native';
 import {ProfileStackParamList} from '../navigation/navigation';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {Avatar} from '../animations/avatarAnimation';
 
-const Avatar = ({imagePath}: {imagePath: ImageSourcePropType}) => {
-  return (
-    <View style={styles.avatarImageBox}>
-      <Image source={imagePath} style={styles.avatarImage} />
-    </View>
-  );
-};
 const NameAndMotto = () => {
   return (
     <View style={styles.nAndM}>
@@ -35,48 +28,43 @@ type ProfileNavProps = {
 
 const LanguageIntroNav = ({navigation, listHeaderText}: ProfileNavProps) => {
   return (
-    <View style={styles.listCom}>
+    <TouchableOpacity
+      style={styles.listCom}
+      onPress={() => {
+        navigation.navigate('ProfileLanguageIntro');
+      }}>
       <View style={styles.listHeader}>
-        <Text>{listHeaderText}</Text>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('ProfileLanguageIntro');
-          }}>
-          <Text>go</Text>
-        </TouchableOpacity>
+        <Text style={styles.listHeaderText}>{listHeaderText}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
+
 const ContactDetailsNav = ({navigation, listHeaderText}: ProfileNavProps) => {
   return (
-    <View style={styles.listCom}>
+    <TouchableOpacity
+      style={styles.listCom}
+      onPress={() => {
+        navigation.navigate('ProfileContactDetails');
+      }}>
       <View style={styles.listHeader}>
         <Text>{listHeaderText}</Text>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('ProfileContactDetails');
-          }}>
-          <Text>go</Text>
-        </TouchableOpacity>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
 const HobbiesNav = ({navigation, listHeaderText}: ProfileNavProps) => {
   return (
-    <View style={styles.listCom}>
+    <TouchableOpacity
+      style={styles.listCom}
+      onPress={() => {
+        navigation.navigate('ProfileHobbies');
+      }}>
       <View style={styles.listHeader}>
         <Text>{listHeaderText}</Text>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('ProfileHobbies');
-          }}>
-          <Text>go</Text>
-        </TouchableOpacity>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -120,19 +108,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
-  avatarImageBox: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    borderStyle: 'solid',
-    borderWidth: 2,
-    borderColor: 'gray',
-  },
-  avatarImage: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 50,
-  },
   nAndM: {
     width: '90%',
     borderBottomColor: 'lightgray',
@@ -156,11 +131,15 @@ const styles = StyleSheet.create({
     width: '90%',
   },
   listHeader: {
-    backgroundColor: 'lightgreen',
+    backgroundColor: 'deepskyblue',
+    borderRadius: 10,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     padding: 6,
     fontWeight: '500',
+  },
+  listHeaderText: {
+    textAlign: 'center',
   },
   listBody: {
     paddingLeft: 40,

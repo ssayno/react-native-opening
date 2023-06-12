@@ -1,4 +1,5 @@
 import {
+  Alert,
   FlatList,
   SafeAreaView,
   StatusBar,
@@ -29,26 +30,30 @@ export const Product = (props: {
     currentIndex: -1,
   });
   useEffect(() => {
-    getProductCategories().then(data => {
-      let updatedMovies: Array<singleMovieSideProp> = [];
-      const productExtData = data.ext;
-      for (let item of productExtData) {
-        updatedMovies.push({
-          sideBarName: item.name,
-          correspondingData: item.children.map((i: singleMoveRightProps) => {
-            return {
-              name: i.name,
-              filePath: i.filePath,
-              id: i.id,
-            };
-          }),
+    getProductCategories()
+      .then(data => {
+        let updatedMovies: Array<singleMovieSideProp> = [];
+        const productExtData = data.ext;
+        for (let item of productExtData) {
+          updatedMovies.push({
+            sideBarName: item.name,
+            correspondingData: item.children.map((i: singleMoveRightProps) => {
+              return {
+                name: i.name,
+                filePath: i.filePath,
+                id: i.id,
+              };
+            }),
+          });
+        }
+        setCurrentMovies({
+          allData: updatedMovies,
+          currentIndex: 0,
         });
-      }
-      setCurrentMovies({
-        allData: updatedMovies,
-        currentIndex: 0,
+      })
+      .catch(e => {
+        Alert.alert('product get category', `${e}`);
       });
-    });
   }, []);
   const handleLeftClick = (index_: number) => {
     setCurrentMovies(prevState => {

@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   Image,
   SafeAreaView,
@@ -53,27 +54,16 @@ export const Weather = (props: weatherComponentProps) => {
   useEffect(() => {
     asyncFetchData().then(data => {
       let searchParams;
-      console.log(`Fetch data is ${data}`);
+      console.log(`async storage fetch data is ${data}`);
       if (!data) {
-        searchParams = {regionAndCountry: 'Xiangtan,China', days: 7};
+        searchParams = {regionAndCountry: 'Maoming,China', days: 7};
       } else {
         searchParams = data;
       }
       handleWeatherForecast(searchParams);
+      startStorage.current = true;
     });
   }, []);
-  // useEffect(() => {
-  //   // console.log(startStorage.current);
-  //   if (weather !== null) {
-  //     if (startStorage.current) {
-  //       asyncStorageData(weather).then(data => {
-  //         console.log(`Storage response is ${data}`);
-  //       });
-  //     } else {
-  //       startStorage.current = true;
-  //     }
-  //   }
-  // }, [asyncStorageData, weather]);
   const handleWeatherForecast = (params: completeParams) => {
     console.log(`Params is ${params}`);
     if (startStorage.current) {
@@ -81,33 +71,38 @@ export const Weather = (props: weatherComponentProps) => {
         console.log(`Storage response is ${data}`);
       });
     }
-    getWeatherForeCast(params).then(data => {
-      // console.log(`Current search box get forecast data is ${JSON.stringify(data)}`);
-      const responseData = JSON.parse(JSON.stringify(data));
-      const currentWeatherData = responseData.current;
-      const forecastWeatherData = responseData.forecast.forecastday;
-      let tempForecast: Array<singleDailyProps> = [];
-      for (let item of forecastWeatherData) {
-        tempForecast.push({
-          date_: item.date,
-          temperature: item.day.avgtemp_c,
-          condition: item.day.condition.text,
+    getWeatherForeCast(params)
+      .then(data => {
+        // console.log(`Current search box get forecast data is ${JSON.stringify(data)}`);
+        const responseData = JSON.parse(JSON.stringify(data));
+        const currentWeatherData = responseData.current;
+        const forecastWeatherData = responseData.forecast.forecastday;
+        let tempForecast: Array<singleDailyProps> = [];
+        for (let item of forecastWeatherData) {
+          tempForecast.push({
+            date_: item.date,
+            temperature: item.day.avgtemp_c,
+            condition: item.day.condition.text,
+          });
+        }
+        // setWeather(prevState => ({...prevState, forecast: tempForecast}));
+        setWeather((prevState: weatherProps) => {
+          return {
+            ...prevState,
+            regionAndCountry: params.regionAndCountry,
+            temperature: currentWeatherData.temp_c,
+            weatherName: currentWeatherData.condition.text,
+            distance: currentWeatherData.wind_kph,
+            dropWater: currentWeatherData.wind_mph,
+            timeNow: responseData.location.localtime.split(' ')[1],
+            forecast: tempForecast,
+          };
         });
-      }
-      // setWeather(prevState => ({...prevState, forecast: tempForecast}));
-      setWeather((prevState: weatherProps) => {
-        return {
-          ...prevState,
-          regionAndCountry: params.regionAndCountry,
-          temperature: currentWeatherData.temp_c,
-          weatherName: currentWeatherData.condition.text,
-          distance: currentWeatherData.wind_kph,
-          dropWater: currentWeatherData.wind_mph,
-          timeNow: responseData.location.localtime.split(' ')[1],
-          forecast: tempForecast,
-        };
+      })
+      .catch(e => {
+        console.log('weather error');
+        Alert.alert('Weather main Error', `${e}`);
       });
-    });
     return null;
   };
   if (!weather) {

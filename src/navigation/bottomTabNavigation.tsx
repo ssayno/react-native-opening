@@ -1,7 +1,10 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Profile} from '../screens/profile';
 import {NavigationContainer} from '@react-navigation/native';
-import { ProductNavigationStacker, ProfileNavigationStacker, WeatherNavigationStacker } from "./navigation";
+import {
+  ProductNavigationStacker,
+  ProfileNavigationStacker,
+  WeatherNavigationStacker,
+} from './navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const OwnTab = createBottomTabNavigator();
