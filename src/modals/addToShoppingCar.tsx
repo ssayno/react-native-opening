@@ -28,6 +28,14 @@ export const AddToShoppingCarModal = ({
       setAddNumber(parseInt(value, 10));
     }
   };
+  const handleSubtractButtonEvent = () => {
+    if (addNumber > 0){
+      setAddNumber(prevState => prevState - 1);
+    }
+  };
+  const handleAddButtonEvent = () => {
+    setAddNumber(prevState => prevState + 1);
+  };
   return (
     <Modal
       animationType="slide"
@@ -74,7 +82,8 @@ export const AddToShoppingCarModal = ({
                 <View style={[styles.buyButtonBox]}>
                   <TouchableOpacity
                     style={[styles.addOrSubtractButton, styles.grayBox]}
-                    onPress={() => setAddNumber(prevState => prevState - 1)}>
+                    disabled={!addNumber}
+                    onPress={handleSubtractButtonEvent}>
                     <Text>-</Text>
                   </TouchableOpacity>
                   <TextInput
@@ -85,7 +94,7 @@ export const AddToShoppingCarModal = ({
                   />
                   <TouchableOpacity
                     style={[styles.addOrSubtractButton, styles.grayBox]}
-                    onPress={() => setAddNumber(prevState => prevState + 1)}>
+                    onPress={handleAddButtonEvent}>
                     <Text>+</Text>
                   </TouchableOpacity>
                 </View>

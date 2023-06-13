@@ -29,6 +29,7 @@ import {OwnDimension} from '../utils/get_device_dimension';
 import {weatherImages} from '../constants/weatherImage';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {MiddleModal} from '../modals/middleModal';
+import { LoadingComponent } from "../components/products/loadingComponent";
 
 type weatherComponentProps = {
   navigation: NativeStackNavigationProp<any>;
@@ -106,7 +107,7 @@ export const Weather = (props: weatherComponentProps) => {
     return null;
   };
   if (!weather) {
-    return <Text>loading</Text>;
+    return <LoadingComponent />;
   }
   return (
     <SafeAreaView style={styles.backgroundStyle}>

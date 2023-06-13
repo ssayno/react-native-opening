@@ -17,7 +17,7 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {ProductStackParamList} from '../../../navigation/navigation';
 import {RouteProp} from '@react-navigation/native';
 
-const HeaderProductDetail = ({ext, fp}) => {
+const HeaderProductDetail = ({ext, fp}: {ext: any; fp: any}) => {
   return (
     <View>
       <View style={styles.rotationStyles}>
@@ -57,7 +57,7 @@ type ProductDetailScreenProps = {
   route: RouteProp<ProductStackParamList, 'ProductDetail'>;
 };
 export const ProductDetail = ({route}: ProductDetailScreenProps) => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<any>(null);
   const {itemId} = route.params;
   useEffect(() => {
     getProductDetailFunc(itemId).then(respData => {
@@ -67,27 +67,28 @@ export const ProductDetail = ({route}: ProductDetailScreenProps) => {
   // const data = props.route.params.respData;
   const rg = /img.*?src="(https.*?)"/g;
 
-  // console.log(`Picture address is ${productDescPic}`);
   return data ? (
-    <FlatList
-      data={data.ext.productDesc
-        .match(rg)
-        ?.map((i: string | any[]) => i.slice(9, i.length - 1))}
-      ListHeaderComponent={
-        <HeaderProductDetail ext={data.ext} fp={data.ext.fild} />
-      }
-      maxToRenderPerBatch={5}
-      ListFooterComponent={<BottomDetailPage />}
-      renderItem={({item, index}) => {
-        return (
-          <Image
-            key={index}
-            source={{uri: item}}
-            style={{width: '100%', height: 500, resizeMode: 'contain'}}
-          />
-        );
-      }}
-    />
+    <>
+      <FlatList
+        data={data.ext.productDesc
+          .match(rg)
+          ?.map((i: string | any[]) => i.slice(9, i.length - 1))}
+        ListHeaderComponent={
+          <HeaderProductDetail ext={data.ext} fp={data.ext.fild} />
+        }
+        maxToRenderPerBatch={5}
+        ListFooterComponent={<BottomDetailPage />}
+        renderItem={({item, index}) => {
+          return (
+            <Image
+              key={index}
+              source={{uri: item}}
+              style={{width: '100%', height: 500, resizeMode: 'contain'}}
+            />
+          );
+        }}
+      />
+    </>
   ) : (
     <LoadingComponent />
   );
